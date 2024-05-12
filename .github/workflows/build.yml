@@ -44,7 +44,7 @@ jobs:
           workspaces: './src-tauri -> target'
 
       - name: Build project
-        uses: tauri-apps/tauri-action@v0
+        run: npm run tauri build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
