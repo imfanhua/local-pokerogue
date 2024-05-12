@@ -28,9 +28,6 @@ jobs:
         with:
           working-directory: pokerogue
 
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-
       - name: Pre build
         run: node ./build.js
 
