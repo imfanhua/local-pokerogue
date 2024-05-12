@@ -36,8 +36,7 @@ jobs:
 
       - name: Build pokerogue
         run: npm run build
-        with:
-          working-directory: pokerogue
+        working-directory: pokerogue
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
