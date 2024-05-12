@@ -1,0 +1,2 @@
+# Local-PokeRogue
+Tauri + PokeRogue

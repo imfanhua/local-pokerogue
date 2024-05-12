@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies on pokerogue
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: pokerogue
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Pre build
+        run: node ./build.js
+
+      - name: Build pokerogue
+        run: npm run build
+        with:
+          working-directory: pokerogue
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Build project
+        run: npm run tauri build
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-files
+          path: ./src-tauri/release/pokerogue.exe
