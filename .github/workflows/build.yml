@@ -50,4 +50,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: production-files
-          path: ./src-tauri/release/pokerogue.exe
+          path: ./src-tauri/target/release/pokerogue.exe
