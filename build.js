@@ -1,5 +1,12 @@
 import { readFileSync, writeFileSync } from 'fs';
 
+// Fix local
+{
+	let source = readFileSync('./pokerogue/src/utils.ts', 'utf-8');
+	source = source.replace(/export\sconst\sisLocal\s=([^;].)*;/g, 'export const isLocal = true;');
+	writeFileSync('./pokerogue/src/utils.ts', source)
+}
+
 // Modify .env
 {
 	const addtion = readFileSync('./.env', 'utf-8')
