@@ -32,11 +32,14 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Pre build
-        run: node ./build.js
+        run: node ./pre-build.js
 
       - name: Build pokerogue
         run: npm run build
         working-directory: pokerogue
+
+      - name: Pre build
+        run: node ./post-build.js
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2

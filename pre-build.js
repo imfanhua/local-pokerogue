@@ -1,17 +1,17 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, renameSync } from 'fs';
 
 // Fix isLocal
 {
 	let source = readFileSync('./pokerogue/src/utils.ts', 'utf-8');
 	source = source.replace(/export\sconst\sisLocal\s=([^;].)*;/g, 'export const isLocal = true;');
-	writeFileSync('./pokerogue/src/utils.ts', source)
+	writeFileSync('./pokerogue/src/utils.ts', source);
 }
 
 // Modify .env
 {
 	const addtion = readFileSync('./.env', 'utf-8')
 	const content = readFileSync('./pokerogue/.env', 'utf-8');
-	writeFileSync('./pokerogue/.env', `${content}\n${addtion}`)
+	writeFileSync('./pokerogue/.env', `${content}\n${addtion}`);
 }
 
 // Copy version
