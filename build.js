@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 
-// Fix local
+// Fix isLocal
 {
 	let source = readFileSync('./pokerogue/src/utils.ts', 'utf-8');
 	source = source.replace(/export\sconst\sisLocal\s=([^;].)*;/g, 'export const isLocal = true;');
