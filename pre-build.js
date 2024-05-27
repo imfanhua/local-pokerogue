@@ -3,8 +3,13 @@ import { readFileSync, writeFileSync, renameSync } from 'fs';
 // Fix isLocal
 {
 	let source = readFileSync('./pokerogue/src/utils.ts', 'utf-8');
-	source = source.replace(/export\sconst\sisLocal\s=([^;].)*;/g, 'export const isLocal = true;');
+	const start = source.indexOf('export const isLocal =');
+	if (start === -1) throw 'Not found!';
+	const end = source.indexOf(';', start);
+	if (end === -1) throw 'Not found!';
+	source = source.replace(source.substring(start, end + 1), 'export const isLocal = true;');
 	writeFileSync('./pokerogue/src/utils.ts', source);
+
 }
 
 // Modify .env
