@@ -1,4 +1,4 @@
 [submodule "pokerogue"]
 	path = pokerogue
-	url = https://github.com/local-pokerogue/pokerogue
+	url = https://github.com/pagefaultgames/pokerogue
 	branch = main
