@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Release
     runs-on: windows-latest
     permissions:
       contents: write
@@ -63,4 +63,3 @@ jobs:
           artifacts: "./src-tauri/target/release/pokerogue.exe"
           bodyFile: "body.md"
           tag: ${{ steps.get_version.outputs.version }}
-          token: ${{ secrets.YOUR_GITHUB_TOKEN }}
