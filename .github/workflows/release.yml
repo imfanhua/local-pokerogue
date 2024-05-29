@@ -1,15 +1,17 @@
-name: Build
+name: Release
 
 on:
   workflow_dispatch:
-  #push:
-  #  branches:
-  #    - main
+  push:
+    branches:
+      - main
 
 jobs:
   build:
     name: Build
     runs-on: windows-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repo
@@ -49,8 +51,16 @@ jobs:
       - name: Build project
         run: npm run tauri build
 
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v3
+      - name: Pre release
+        run: node ./release.js
+
+      - name: Get version
+        id: get_version
+        run: echo "::set-output name=version::$(cat VERSION)"
+
+      - uses: ncipollo/release-action@v1
         with:
-          name: production-files
-          path: ./src-tauri/target/release/pokerogue.exe
+          artifacts: "./src-tauri/target/release/pokerogue.exe"
+          bodyFile: "body.md"
+          tag: ${{ steps.get_version.outputs.version }}
+          token: ${{ secrets.YOUR_GITHUB_TOKEN }}
