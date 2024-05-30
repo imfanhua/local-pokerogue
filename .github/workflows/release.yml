@@ -56,8 +56,4 @@ jobs:
 
       - name: Create release
         run: |
-          gh release create "$(cat VERSION)" \
-            -t "$(cat VERSION)" \
-            --target main \
-            -F body.md \
-            './src-tauri/target/release/pokerogue.exe#pokerogue-$(cat VERSION).exe'
+          gh release create "$(cat VERSION)" -t "$(cat VERSION)" --target main -F body.md './src-tauri/target/release/pokerogue.exe#pokerogue-$(cat VERSION).exe'
