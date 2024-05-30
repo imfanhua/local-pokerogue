@@ -56,7 +56,8 @@ jobs:
 
       - name: Get version
         id: get_version
-        run: echo "version=$(cat VERSION)" >> $env:$GITHUB_OUTPUT
+        run: |
+          "version=$(cat VERSION)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
       - name: Create release
         id: create_release
