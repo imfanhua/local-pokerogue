@@ -20,7 +20,7 @@ jobs:
           submodules: recursive
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -58,11 +58,13 @@ jobs:
         id: get_version
         run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
 
+      - name: Test
+        run: echo "version=$(cat VERSION)"
+
       - name: Create release
         id: create_release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "./src-tauri/target/release/pokerogue.exe"
           bodyFile: "body.md"
           tag: ${{ steps.get_version.outputs.version }}
           
