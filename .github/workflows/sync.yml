@@ -7,8 +7,11 @@ on:
 
 jobs:
   sync:
+    name: Sync
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
         with: 
@@ -28,54 +31,6 @@ jobs:
           git push
 
   release:
-    name: Release
-    runs-on: windows-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Install dependencies on pokerogue
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: pokerogue
-
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-
-      - name: Pre build
-        run: node ./pre-build.js
-
-      - name: Build pokerogue
-        run: npm run build
-        working-directory: pokerogue
-
-      - name: Pre build
-        run: node ./post-build.js
-
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: './src-tauri -> target'
-
-      - name: Build project
-        run: npm run tauri build
-
-      - name: Pre release
-        run: node ./release.js
-
-      - name: Create release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release create "$(cat VERSION)" -t "$(cat VERSION)" --target main -F body.md "./src-tauri/target/release/pokerogue.exe#pokerogue-$(cat VERSION).exe"
+    uses: ./.github/workflows/workflow-release.yml
+    secrets:
+      token: ${{ github.token }}
