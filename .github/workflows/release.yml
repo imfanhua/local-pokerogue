@@ -57,7 +57,6 @@ jobs:
       - name: Create release
         run: |
           gh release create "$(cat VERSION)" \
-            --latest \
             -t "$(cat VERSION)" \
             --target main \
             -F body.md \
