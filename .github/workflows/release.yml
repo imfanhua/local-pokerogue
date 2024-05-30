@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -56,10 +56,18 @@ jobs:
 
       - name: Get version
         id: get_version
-        run: echo "::set-output name=version::$(cat VERSION)"
+        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
 
-      - uses: ncipollo/release-action@v1
+      - name: Create release
+        id: create_release
+        uses: ncipollo/release-action@v1
         with:
           artifacts: "./src-tauri/target/release/pokerogue.exe"
           bodyFile: "body.md"
           tag: ${{ steps.get_version.outputs.version }}
+          
+      - name: Upload asset
+        uses: shogo82148/actions-upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.upload_url }}
+          asset_path: "./src-tauri/target/release/pokerogue.exe"
