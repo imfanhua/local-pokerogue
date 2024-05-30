@@ -7,32 +7,9 @@ on:
 
 jobs:
   sync:
-    name: Sync
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v4
-        with: 
-          ref: main
-      - name: Sync
-        id: sync
-        continue-on-error: true
-        run: node ./sync.js
-      - name: Commit
-        if: ${{ steps.sync.outcome == 'success' }}
-        continue-on-error: true
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions - Sync Submodules"
-          git add --all
-          git commit -m "sync: 同步游戏源"
-          git push
-
+    uses: ./.github/workflows/workflow-sync.yml
   release:
     uses: ./.github/workflows/workflow-release.yml
     needs: sync
-    if: ${{ jobs.sync.steps.sync.outcome == 'success' }}
-    secrets:
-      token: ${{ github.token }}
+    if: ${{ needs.sync.outputs.outcome == 'success' }}
+

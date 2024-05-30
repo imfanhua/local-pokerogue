@@ -9,5 +9,3 @@ on:
 jobs:
   release:
     uses: ./.github/workflows/workflow-release.yml
-    secrets:
-      token: ${{ github.token }}
