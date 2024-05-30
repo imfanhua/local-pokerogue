@@ -1,4 +1,4 @@
-name: Sync Submodule
+name: Sync Release
 
 on:
   #schedule:
