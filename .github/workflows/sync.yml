@@ -32,5 +32,7 @@ jobs:
 
   release:
     uses: ./.github/workflows/workflow-release.yml
+    needs: sync
+    if: ${{ jobs.sync.steps.sync.outcome == 'success' }}
     secrets:
       token: ${{ github.token }}
