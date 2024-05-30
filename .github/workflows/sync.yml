@@ -8,8 +8,3 @@ on:
 jobs:
   sync:
     uses: ./.github/workflows/workflow-sync.yml
-  release:
-    uses: ./.github/workflows/workflow-release.yml
-    needs: sync
-    if: ${{ needs.sync.outputs.outcome == 'success' }}
-

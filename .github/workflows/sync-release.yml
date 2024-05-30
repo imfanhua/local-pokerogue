@@ -1,0 +1,15 @@
+name: Sync Submodule
+
+on:
+  #schedule:
+  #  - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    uses: ./.github/workflows/workflow-sync-release.yml
+  release:
+    uses: ./.github/workflows/workflow-release.yml
+    needs: sync
+    if: ${{ needs.sync.outputs.outcome == 'success' }}
+
