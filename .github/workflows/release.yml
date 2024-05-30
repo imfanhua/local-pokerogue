@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  build:
+  release:
     name: Release
     runs-on: windows-latest
     permissions:
