@@ -56,10 +56,7 @@ jobs:
 
       - name: Get version
         id: get_version
-        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
-
-      - name: Test
-        run: echo "version=$(cat VERSION)"
+        run: echo "version=$(cat VERSION)" >> $env:$GITHUB_OUTPUT
 
       - name: Create release
         id: create_release
