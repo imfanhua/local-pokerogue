@@ -54,20 +54,11 @@ jobs:
       - name: Pre release
         run: node ./release.js
 
-      - name: Get version
-        id: get_version
-        run: |
-          "version=$(cat VERSION)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-
       - name: Create release
-        id: create_release
-        uses: ncipollo/release-action@v1
-        with:
-          bodyFile: "body.md"
-          tag: ${{ steps.get_version.outputs.version }}
-          
-      - name: Upload asset
-        uses: shogo82148/actions-upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.upload_url }}
-          asset_path: "./src-tauri/target/release/pokerogue.exe"
+        run: |
+          gh release create "$(cat VERSION)" \
+            --latest \
+            -t "$(cat VERSION)" \
+            --target main \
+            -F body.md \
+            './src-tauri/target/release/pokerogue.exe#pokerogue-$(cat VERSION).exe'
