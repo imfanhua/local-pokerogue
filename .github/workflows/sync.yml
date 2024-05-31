@@ -1,8 +1,8 @@
 name: Sync Submodule
 
 on:
-  #schedule:
-  #  - cron: '*/30 * * * *'
+  schedule:
+    - cron: '*/20 * * * *'
   workflow_dispatch:
 
 jobs:
