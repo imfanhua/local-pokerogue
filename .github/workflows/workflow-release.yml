@@ -1,24 +1,20 @@
-name: Build
-
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
-  build:
-    name: Build
+  release:
+    name: Release
     runs-on: windows-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -49,8 +45,11 @@ jobs:
       - name: Build project
         run: npm run tauri build
 
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v3
-        with:
-          name: production-files
-          path: ./src-tauri/target/release/pokerogue.exe
+      - name: Pre release
+        run: node ./release.js
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$(cat VERSION)" -t "$(cat VERSION)" --target main -F body.md './src-tauri/target/release/pokerogue.exe#pokerogue.exe'

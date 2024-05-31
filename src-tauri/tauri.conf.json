@@ -17,6 +17,7 @@
 		},
 		"windows": [
 			{
+				"label": "main",
 				"title": "PokeRogue",
 				"url": "app.html",
 				"width": 800,

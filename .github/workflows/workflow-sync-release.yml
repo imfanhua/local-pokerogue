@@ -1,0 +1,32 @@
+on:
+  workflow_call:
+    outputs:
+      outcome:
+        description: "Sync outcome"
+        value: ${{ jobs.sync.outputs.outcome }}
+
+jobs:
+  sync:
+    name: Sync
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      outcome: ${{ steps.sync.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+        with: 
+          ref: main
+      - name: Sync
+        id: sync
+        continue-on-error: true
+        run: node ./sync-release.js
+      - name: Commit
+        if: ${{ steps.sync.outcome == 'success' }}
+        continue-on-error: true
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions - Sync Release"
+          git add --all
+          git commit -m "sync: 自动发布"
+          git push

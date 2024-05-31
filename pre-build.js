@@ -1,4 +1,5 @@
-import { readFileSync, writeFileSync, renameSync } from 'fs';
+import { hash } from './tools.js';
+import { readFileSync, writeFileSync } from 'fs';
 
 // Fix isLocal
 {
@@ -21,13 +22,18 @@ import { readFileSync, writeFileSync, renameSync } from 'fs';
 
 // Copy version
 {
-	const version = JSON.parse(readFileSync('./pokerogue/package.json', 'utf-8'))["version"];
-	writeFileSync('./src-tauri/tauri.conf.json', JSON.stringify(
-		{
-			...JSON.parse(readFileSync('./src-tauri/tauri.conf.json', 'utf-8')),
-			...{
-				"package": { version }
-			}
+	const version = JSON.parse(readFileSync('./package.json', 'utf-8'))["version"];
+	const pokerogue = JSON.parse(readFileSync('./pokerogue/package.json', 'utf-8'))["version"];
+	const game = `v${pokerogue}-${hash().substring(0, 7)}`;
+
+	writeFileSync('./VERSION', `v${version}-${game}`);
+
+	let config = {
+		...JSON.parse(readFileSync('./src-tauri/tauri.conf.json', 'utf-8')),
+		...{
+			"package": { version }
 		}
-	));
+	};
+	config['tauri']['windows'][0]['title'] += ` ${game} [v${version}]`;
+	writeFileSync('./src-tauri/tauri.conf.json', JSON.stringify(config));
 }

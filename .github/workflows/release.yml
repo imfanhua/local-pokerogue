@@ -1,0 +1,11 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    uses: ./.github/workflows/workflow-release.yml
