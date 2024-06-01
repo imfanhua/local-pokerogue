@@ -8,6 +8,13 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Delete latest release assets
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete-asset $(gh release view --json tagName --jq .tagName) pokerogue.exe -y
+ 
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
@@ -34,7 +41,7 @@ jobs:
         run: npm run build
         working-directory: pokerogue
 
-      - name: Pre build
+      - name: Post build
         run: node ./post-build.js
 
       - name: Rust cache
