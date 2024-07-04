@@ -16,8 +16,8 @@ import { readFileSync, writeFileSync } from 'fs';
 // Modify .env
 {
 	const addtion = readFileSync('./.env', 'utf-8')
-	const content = readFileSync('./pokerogue/.env', 'utf-8');
-	writeFileSync('./pokerogue/.env', `${content}\n${addtion}`);
+	const content = readFileSync('./pokerogue/.env.production', 'utf-8');
+	writeFileSync('./pokerogue/.env.production', `${content}\n${addtion}`);
 }
 
 // Copy version
